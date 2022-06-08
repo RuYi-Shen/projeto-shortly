@@ -8,8 +8,10 @@ export async function signUp(req, res) {
   try {
     const hash = await bcrypt.hash(user.password, 10);
     user.password = hash;
-    delete user.passwordConfirmation;
-    await db.collection("users").insertOne(user);
+    await db.query(
+      `INSERT INTO users (name, email, password) VALUES ($1, $2, $3)`,
+      [user.name, user.email, user.password]
+    );     
 
     res.sendStatus(201);
   } catch (error) {
