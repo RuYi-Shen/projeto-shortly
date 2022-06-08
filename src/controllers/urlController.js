@@ -31,3 +31,17 @@ export async function getUrl(req, res) {
     res.status(500).send(error);
   }
 }
+
+export async function redirectToUrl(req, res) {
+  const shortUrl = req.params.shortUrl;
+  try {
+    const url = await db.query(`SELECT urls.url FROM urls WHERE "shortUrl" = $1`, [shortUrl]);
+    if (url.rows.length === 0) {
+      return res.status(404).send("Url not found");
+    }
+    res.redirect(url.rows[0].url);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+}
