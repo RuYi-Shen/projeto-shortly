@@ -25,25 +25,14 @@ export async function signIn(req, res) {
 
   try {
     const token = uuid();
-    await db.collection("sessions").insertOne({
-      token,
-      userId: user._id,
-    });
-    res.json({ token, username: user.name });
+    await db.query(
+      `INSERT INTO tokens (token, "userId") VALUES ($1, $2)`,
+      [token, user.id]
+    );
+    res.status(200).send(token);
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
   }
 }
 
-export async function logOut(req, res) {
-  const token = req.body.token;
-  
-  try {
-    await db.collection("sessions").deleteOne({ token });
-    res.sendStatus(204);
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error);
-  }
-}

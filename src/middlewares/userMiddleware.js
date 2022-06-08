@@ -1,43 +1,23 @@
 import db from "../db.js";
 import bcrypt from "bcrypt";
 
-export async function validateSignIn(req, res, next) {
-  const user = req.body;
-  try {
-    await signInSchema.validateAsync(user, { abortEarly: false });
-    next();
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error.details);
-  }
-}
-
-export async function validateLogOut(req, res, next) {
-  const info = req.body;
-  try {
-    await logOutSchema.validateAsync(info, { abortEarly: false });
-    next();
-  } catch (error) {
-    console.log(error);
-    res.status(400).send(error.details);
-  }
-}
-
-
 export async function validateUser(req, res, next) {
   const user = req.body;
   try {
-    const userFromDb = await db
-      .collection("users")
-      .findOne({ email: user.email });
-    if (!userFromDb) {
-      return res.status(401).send("Invalid email or password");
+    const userFromDb = await db.query(`SELECT * FROM users WHERE email = $1`, [
+      user.email,
+    ]);
+    if (userFromDb.rows.length === 0) {
+      return res.status(401).send("User not found");
     }
-    const isValid = await bcrypt.compare(user.password, userFromDb.password);
+    const isValid = await bcrypt.compare(
+      user.password,
+      userFromDb.rows[0].password
+    );
     if (!isValid) {
-      return res.status(401).send("Invalid email or password");
+      return res.status(401).send("Invalid password");
     }
-    res.locals.user = userFromDb;
+    res.locals.user = userFromDb.rows[0];
     next();
   } catch (error) {
     console.log(error);
