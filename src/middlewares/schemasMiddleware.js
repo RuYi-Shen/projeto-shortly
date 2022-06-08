@@ -1,4 +1,4 @@
-import { signUpSchema, signInSchema } from "../schemas/userSchema.js";
+import { signUpSchema, signInSchema } from "../schemas/authSchema.js";
 import { urlSchema } from "../schemas/urlSchema.js";
 import db from "../db.js";
 
