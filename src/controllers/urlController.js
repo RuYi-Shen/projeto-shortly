@@ -45,6 +45,10 @@ export async function redirectToUrl(req, res) {
     if (url.rows.length === 0) {
       return res.status(404).send("Url not found");
     }
+    await db.query(
+      `UPDATE urls SET "visitCount" = "visitCount" + 1 WHERE "shortUrl" = $1`,
+      [shortUrl]
+    );
     res.redirect(url.rows[0].url);
   } catch (error) {
     console.log(error);
