@@ -32,7 +32,8 @@ export async function getRanking(req, res) {
       `SELECT users.id, users.name, SUM(urls.id) AS "linksCount", SUM(urls."visitCount") AS "visitCount" FROM users 
       LEFT JOIN urls ON urls."userId" = users.id 
       GROUP BY users.id 
-      ORDER BY "visitCount"`
+      ORDER BY "visitCount"
+      LIMIT 10`
     );
     users.rows.forEach((user) => {
         if(!user.linksCount) user.linksCount = 0;
