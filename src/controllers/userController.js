@@ -29,7 +29,7 @@ export async function getUser(req, res) {
 export async function getRanking(req, res) {
   try {
     const users = await db.query(
-      `SELECT users.id, users.name, SUM(urls.id) AS "linksCount", SUM(urls."visitCount") AS "visitCount" FROM users 
+      `SELECT users.id, users.name, COUNT(urls) AS "linksCount", SUM(urls."visitCount") AS "visitCount" FROM users 
       LEFT JOIN urls ON urls."userId" = users.id 
       GROUP BY users.id 
       ORDER BY "visitCount"
