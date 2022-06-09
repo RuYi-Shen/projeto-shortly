@@ -7,12 +7,19 @@ import {
 } from "../controllers/urlController.js";
 import {
   validateToken,
-  validateUrl,
-} from "../middlewares/schemasMiddleware.js";
+  validateSchema,
+} from "../middlewares/validateMiddleware.js";
+
+import { urlSchema } from "../schemas/urlSchema.js";
 
 const urlRouter = Router();
 
-urlRouter.post("/shorten", validateToken, validateUrl, generateShortUrl);
+urlRouter.post(
+  "/shorten",
+  validateToken,
+  validateSchema(urlSchema),
+  generateShortUrl
+);
 urlRouter.get("/open/:shortUrl", redirectToUrl);
 urlRouter.get("/:id", getUrl);
 urlRouter.delete("/:id", validateToken, deleteUrl);
