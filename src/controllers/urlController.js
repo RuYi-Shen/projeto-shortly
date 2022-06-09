@@ -64,8 +64,8 @@ export async function deleteUrl(req, res) {
     if (url.rows.length === 0) {
       return res.status(404).send("Url not found");
     }
-    if(url.rows[0].userId !== token.userId) {
-        return res.status(401).send("Unauthorized");
+    if (url.rows[0].userId !== token.userId) {
+      return res.status(401).send("Unauthorized");
     }
     await db.query(`DELETE FROM urls WHERE id = $1`, [id]);
     res.sendStatus(204);

@@ -36,10 +36,10 @@ export async function getRanking(req, res) {
       LIMIT 10`
     );
     users.rows.forEach((user) => {
-        if(!user.linksCount) user.linksCount = 0;
-        user.linksCount *= 1;
-        if(!user.visitCount) user.visitCount = 0;
-        user.visitCount *= 1;
+      if (!user.linksCount) user.linksCount = 0;
+      user.linksCount *= 1;
+      if (!user.visitCount) user.visitCount = 0;
+      user.visitCount *= 1;
     });
     res.json(users.rows);
   } catch (error) {

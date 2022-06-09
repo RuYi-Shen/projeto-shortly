@@ -11,7 +11,7 @@ export async function signUp(req, res) {
     await db.query(
       `INSERT INTO users (name, email, password) VALUES ($1, $2, $3)`,
       [user.name, user.email, user.password]
-    );     
+    );
 
     res.sendStatus(201);
   } catch (error) {
@@ -25,14 +25,13 @@ export async function signIn(req, res) {
 
   try {
     const token = uuid();
-    await db.query(
-      `INSERT INTO tokens (token, "userId") VALUES ($1, $2)`,
-      [token, user.id]
-    );
+    await db.query(`INSERT INTO tokens (token, "userId") VALUES ($1, $2)`, [
+      token,
+      user.id,
+    ]);
     res.status(200).send(token);
   } catch (error) {
     console.log(error);
     res.status(500).send(error);
   }
 }
-

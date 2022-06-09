@@ -1,6 +1,14 @@
-import { Router } from 'express';
-import { generateShortUrl, getUrl, redirectToUrl, deleteUrl } from '../controllers/urlController.js';
-import { validateToken, validateUrl } from '../middlewares/schemasMiddleware.js';
+import { Router } from "express";
+import {
+  generateShortUrl,
+  getUrl,
+  redirectToUrl,
+  deleteUrl,
+} from "../controllers/urlController.js";
+import {
+  validateToken,
+  validateUrl,
+} from "../middlewares/schemasMiddleware.js";
 
 const urlRouter = Router();
 
