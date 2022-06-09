@@ -1,10 +1,9 @@
 import { Router } from 'express';
-import { getUser } from '../controllers/userController.js';
-//import { validateToken, validateUrl } from '../middlewares/schemasMiddleware.js';
+import { getUser, getRanking } from '../controllers/userController.js';
 
 const userRouter = Router();
 
-//userRouter.get("/ranking", redirectToUrl);
+userRouter.get("/ranking", getRanking);
 userRouter.get("/:id", getUser);
 
 export default userRouter;
