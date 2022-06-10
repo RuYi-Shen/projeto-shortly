@@ -1,12 +1,10 @@
-import db from "../db.js";
 import bcrypt from "bcrypt";
+import databaseRepository from "../repositories/databaseRepository.js";
 
 export async function validateUser(req, res, next) {
   const user = req.body;
   try {
-    const userFromDb = await db.query(`SELECT * FROM users WHERE email = $1`, [
-      user.email,
-    ]);
+    const userFromDb = await databaseRepository.getUserbyEmail(user.email);
     if (userFromDb.rows.length === 0) {
       return res.status(401).send("User not found");
     }

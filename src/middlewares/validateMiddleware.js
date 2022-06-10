@@ -1,4 +1,4 @@
-import db from "../db.js";
+import databaseRepository from "../repositories/databaseRepository.js";
 
 export function validateSchema(schema) {
   return async (req, res, next) => {
@@ -17,10 +17,7 @@ export async function validateToken(req, res, next) {
   const token = authorization?.replace("Bearer ", "").trim();
   if (!token) return res.status(401).send("Unauthorized");
   try {
-    const tokenFromDb = await db.query(
-      `SELECT * FROM tokens WHERE token = $1`,
-      [token]
-    );
+    const tokenFromDb = await databaseRepository.getToken(token);
     if (tokenFromDb.rows.length === 0) {
       return res.status(401).send("Unauthorized");
     }

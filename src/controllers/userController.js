@@ -1,19 +1,13 @@
-import db from "../db.js";
+import databaseRepository from "../repositories/databaseRepository.js";
 
 export async function getUser(req, res) {
   const id = req.params.id;
   try {
-    const user = await db.query(
-      `SELECT users.id, users.name FROM users WHERE users.id = $1`,
-      [id]
-    );
+    const user = await databaseRepository.getUser(id);
     if (user.rows.length === 0) {
       return res.status(404).send("User not found");
     }
-    const urls = await db.query(
-      `SELECT urls.id, urls."shortUrl", urls.url, urls."visitCount" FROM urls WHERE urls."userId" = $1`,
-      [id]
-    );
+    const urls = await databaseRepository.getUrls(id);
     user.rows[0].visitCount = 0;
     urls.rows.forEach((url) => {
       user.rows[0].visitCount += url.visitCount;
@@ -28,13 +22,7 @@ export async function getUser(req, res) {
 
 export async function getRanking(req, res) {
   try {
-    const users = await db.query(
-      `SELECT users.id, users.name, COUNT(urls) AS "linksCount", SUM(urls."visitCount") AS "visitCount" FROM users 
-      LEFT JOIN urls ON urls."userId" = users.id 
-      GROUP BY users.id 
-      ORDER BY "visitCount"
-      LIMIT 10`
-    );
+    const users = await databaseRepository.getRanking();
     users.rows.forEach((user) => {
       if (!user.linksCount) user.linksCount = 0;
       user.linksCount *= 1;
