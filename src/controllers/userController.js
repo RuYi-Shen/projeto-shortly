@@ -2,6 +2,9 @@ import databaseRepository from "../repositories/databaseRepository.js";
 
 export async function getUser(req, res) {
   const id = req.params.id;
+  if (id != res.locals.token.userId) {
+    return res.status(401).send("Unauthorized");
+  }
   try {
     const user = await databaseRepository.getUser(id);
     if (user.rows.length === 0) {

@@ -18,7 +18,7 @@ async function getUserbyEmail(email) {
 async function getUrls(userId) {
   return db.query(
     `SELECT urls.id, urls."shortUrl", urls.url, urls."visitCount" FROM urls WHERE urls."userId" = $1`,
-    [id]
+    [userId]
   );
 }
 
