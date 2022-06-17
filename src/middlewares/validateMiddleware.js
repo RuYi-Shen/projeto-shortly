@@ -21,6 +21,7 @@ export async function validateToken(req, res, next) {
     if (tokenFromDb.rows.length === 0) {
       return res.status(401).send("Unauthorized");
     }
+    console.log(tokenFromDb.rows[0]);
     res.locals.token = tokenFromDb.rows[0];
     next();
   } catch (error) {

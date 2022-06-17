@@ -40,8 +40,8 @@ async function insertUrl(shortUrl, url, userId) {
 }
 
 async function getUrlbyId(id) {
-  db.query(
-    `SELECT urls.id, urls."shortUrl", urls.url FROM urls WHERE id = $1`,
+  return db.query(
+    `SELECT urls.id, urls."shortUrl", urls.url, urls."userId" FROM urls WHERE urls.id = $1`,
     [id]
   );
 }
